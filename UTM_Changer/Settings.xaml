@@ -1,0 +1,48 @@
+﻿<Window x:Class="UTM_Changer.Settings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UTM_Changer"
+        mc:Ignorable="d"
+        Title="Settings" Height="450" Width="450" Closing="SettingsWindow_Closing">
+    <Grid x:Name="LayoutRoot">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.175*"/>
+            <ColumnDefinition Width="0.267*"/>
+        </Grid.ColumnDefinitions>
+        <TreeView x:Name="tv" Margin="8,8,8,32">
+            <TreeViewItem x:Name="common" Header="Общие">
+            </TreeViewItem>
+            <TreeViewItem x:Name="сustom" Header="Пользовательские">
+            </TreeViewItem>
+        </TreeView>
+
+        <TabControl x:Name="tc" Grid.Column="1" Margin="8,-12,8,56" Background="#FFE4E4E4" BorderBrush="#FFE4E4E4">
+            <TabControl.Items>
+                <TabItem x:Name="commonItem" Width="0" Height="0" Background="#FFE4E4E4" IsSelected="{Binding ElementName=common, Path=IsSelected}">
+                    <Grid Height="346">
+                        <TextBlock Text="Панель общих параметров" Height="24" VerticalAlignment="Top" Margin="10,10,-10,0" />
+                        <CheckBox x:Name="shouldSaveData" Content="Сохранять изменения" HorizontalAlignment="Left" Margin="10,39,0,0" VerticalAlignment="Top" IsChecked="True" Checked="shouldSaveData_Checked" Unchecked="shouldSaveData_Unchecked"/>
+                    </Grid>
+                </TabItem>
+                <TabItem x:Name="customItem" Width="0" Height="0" Background="#FFE4E4E4" IsSelected="{Binding ElementName=сustom, Path=IsSelected}">
+                    <Grid Height="346" Background="#FFE4E4E4">
+                        <TextBlock Text="Панель пользовательских параметров" VerticalAlignment="Top"  />
+                        <StackPanel Margin="0,20,0,0" Height="70" VerticalAlignment="Top">
+                            <CheckBox Content="Элемент управления 1" />
+                            <CheckBox Content="Элемент управления 2" />
+                            <CheckBox Content="Элемент управления 3" />
+                            <CheckBox Content="Элемент управления 4" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,100,0,0" Height="24" VerticalAlignment="Top">
+                            <TextBlock Text="Какое-то значение:" Width="120"  Height="24"/>
+                            <Slider Width="150" Height="24" Margin="4,0,0,0" IsSnapToTickEnabled="True" Name="slider" />
+                            <TextBlock Width="30"  Height="24" Margin="4,0,0,0" Text="{Binding ElementName=slider, Path=Value}" />
+                        </StackPanel>
+                    </Grid>
+                </TabItem>
+            </TabControl.Items>
+        </TabControl>
+    </Grid>
+</Window>
