@@ -38,7 +38,10 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Additional">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#FFE5E5E5">
+                    <Button Content="Button" HorizontalAlignment="Left" Margin="33,22,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+                    <Button Content="Button" HorizontalAlignment="Left" Margin="33,49,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
+                </Grid>
             </TabItem>
         </TabControl>
 

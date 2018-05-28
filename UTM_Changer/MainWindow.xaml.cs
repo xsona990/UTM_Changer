@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using UTM_Changer.Parser;
 
 namespace UTM_Changer
 {
@@ -23,13 +24,37 @@ namespace UTM_Changer
         private BaseFunctions baseFunctions;
         private UserPrefs prefs;
         Settings settingsWindow;
+
+        ParserWorker<string[]> parser;
+
         public MainWindow()
         {
             baseFunctions = new BaseFunctions(this);
             prefs = baseFunctions.loadSettings();
             InitializeComponent();
             applyPrefs();
+            parser = new ParserWorker<string[]>(
+                new HabraParser());
+            parser.OnCompleted += Parser_OnCompleted;
+            parser.OnNewData += Parser_OnNewData;
         }
+
+        private void Parser_OnNewData(object arg1, string[] arg2)
+        {
+            Console.WriteLine("________________");
+            foreach (var item in arg2)
+            {
+                Console.WriteLine(item);
+            }
+            Console.WriteLine("________________");
+
+        }
+
+        private void Parser_OnCompleted(object obj)
+        {
+            MessageBox.Show("OK!");
+        }
+
         private void SettingsMenu_Click(object sender, RoutedEventArgs e)
         {
             settingsWindow = new Settings(prefs);
@@ -74,6 +99,18 @@ namespace UTM_Changer
             prefs.Utm_medium = medium.Text;
             prefs.Utm_source = source.Text;
             baseFunctions.saveSettings(prefs);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            parser.Settings = new HabraSettings(1, 3);
+            parser.Start();
+
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            parser.Abort();
         }
     }
 }

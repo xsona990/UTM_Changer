@@ -78,10 +78,12 @@ namespace UTM_Changer
                 BinaryFormatter formatter = new BinaryFormatter();
                 // получаем поток, куда будем записывать сериализованный объект
 
-                if (!Directory.Exists(appData + "\\UTMChangerData")) ;
+                if (!Directory.Exists(appData + "\\UTMChangerData"))
                 {
-                    Directory.CreateDirectory(appData + "\\UTMChangerData");
+                      Directory.CreateDirectory(appData + "\\UTMChangerData");
                 }
+
+                
                 using (FileStream stream = new FileStream(path, FileMode.OpenOrCreate))
                 {
                     formatter.Serialize(stream, userPrefs);
