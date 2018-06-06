@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using UTM_Changer.Parser;
 
 namespace UTM_Changer
 {
@@ -35,6 +36,8 @@ namespace UTM_Changer
 
         private void SettingsWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            var main = this.Owner as MainWindow;
+            main.refreshParsersCb();
             this.Owner.Show();
         }
 
@@ -46,6 +49,20 @@ namespace UTM_Changer
         private void shouldSaveData_Unchecked(object sender, RoutedEventArgs e)
         {
             userPrefs.ShouldSaveData = false;
+        }
+        private void addNewParser_Click(object sender, RoutedEventArgs e)
+        {
+            ParserCreator newParser = new ParserCreator(className.Text, classSelector.Text, baseUrl.Text, prefixStructure.Text);
+            string name = parserName.Text;
+            if (userPrefs.Parsers.ContainsKey(name))
+            {
+                MessageBox.Show("Name already exists!");
+            }
+            else
+            {
+                userPrefs.addParser(name, newParser);
+            }
+           
         }
     }
 }

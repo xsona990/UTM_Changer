@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UTM_Changer.Parser.Core
+namespace UTM_Changer.Parser
 {
     interface IParserSettings
     {

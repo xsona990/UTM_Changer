@@ -25,36 +25,14 @@ namespace UTM_Changer
         private UserPrefs prefs;
         Settings settingsWindow;
 
-        ParserWorker<string[]> parser;
-
         public MainWindow()
         {
             baseFunctions = new BaseFunctions(this);
             prefs = baseFunctions.loadSettings();
             InitializeComponent();
             applyPrefs();
-            parser = new ParserWorker<string[]>(
-                new HabraParser());
-            parser.OnCompleted += Parser_OnCompleted;
-            parser.OnNewData += Parser_OnNewData;
+           
         }
-
-        private void Parser_OnNewData(object arg1, string[] arg2)
-        {
-            Console.WriteLine("________________");
-            foreach (var item in arg2)
-            {
-                Console.WriteLine(item);
-            }
-            Console.WriteLine("________________");
-
-        }
-
-        private void Parser_OnCompleted(object obj)
-        {
-            MessageBox.Show("OK!");
-        }
-
         private void SettingsMenu_Click(object sender, RoutedEventArgs e)
         {
             settingsWindow = new Settings(prefs);
@@ -62,6 +40,7 @@ namespace UTM_Changer
             settingsWindow.Show();
             this.Hide();
         }
+        //TODO
         private void AboutMenu_Click(object sender, RoutedEventArgs e)
         {
 
@@ -92,8 +71,18 @@ namespace UTM_Changer
         {
             source.Text = prefs.Utm_source;
             medium.Text = prefs.Utm_medium;
+            refillParsers();
         }
-
+        public void refillParsers()
+        {
+            parsers.Items.Clear();
+            parsers.ItemsSource = prefs.Parsers.Keys;
+            parsers.SelectedIndex = 0;
+        }
+        public void refreshParsersCb()
+        {
+            parsers.Items.Refresh();
+        }
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             prefs.Utm_medium = medium.Text;
@@ -101,16 +90,81 @@ namespace UTM_Changer
             baseFunctions.saveSettings(prefs);
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void linkCount_Scroll(object sender, System.Windows.Controls.Primitives.ScrollEventArgs e)
         {
-            parser.Settings = new HabraSettings(1, 3);
-            parser.Start();
-
+            //  Console.WriteLine("siteCount_Scroll" + siteCount.Value);
+            linkCount.Value = (int)linkCount.Value;
+            linkCountIndicator.Content = linkCount.Value;
+           
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        public IEnumerable<T> FindVisualChildren<T>(DependencyObject depObj) where T : DependencyObject
         {
-            parser.Abort();
+            if (depObj != null)
+            {
+                int depObjCount = VisualTreeHelper.GetChildrenCount(depObj);
+                for (int i = 0; i < depObjCount; i++)
+                {
+                    DependencyObject child = VisualTreeHelper.GetChild(depObj, i);
+                    if (child != null && child is T)
+                    {
+                        yield return (T)child;
+                    }
+
+                    if (child is GroupBox)
+                    {
+                        GroupBox gb = child as GroupBox;
+                        Object gpchild = gb.Content;
+                        if (gpchild is T)
+                        {
+                            yield return (T)child;
+                            child = gpchild as T;
+                        }
+                    }
+
+                    foreach (T childOfChild in FindVisualChildren<T>(child))
+                    {
+                        yield return childOfChild;
+                    }
+                }
+            }
         }
+
+        private void parseBtn_Click(object sender, RoutedEventArgs e)
+        {
+            parsedContent.Items.Clear();
+
+           ParserCreator parser;
+            prefs.Parsers.TryGetValue(parsers.SelectedValue.ToString(), out parser);
+            parser.EndPoint = 1;
+            try
+            {
+                    parser.Parse();               
+                
+            }
+            catch (NullReferenceException)
+            {
+
+                throw;
+            }
+            if (parser.ResultList!=null)
+            {
+                foreach (var item in parser.ResultList)
+                {
+                    parsedContent.Items.Add(new ListViewItemsStructure { PostTitle = item.getText(), PostLink = item.getHrefLink(), UTMLable = "null" });
+                   
+                }
+            }
+        }
+
+    }
+
+    public class ListViewItemsStructure
+    {
+        public string PostTitle { get; set; }
+
+        public string PostLink { get; set; }
+
+        public string UTMLable { get; set; }
     }
 }

@@ -56,17 +56,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BaseFunctions.cs" />
+    <Compile Include="Content\BaseFunctions.cs" />
+    <Compile Include="Parser\Core\HtmlLoader.cs" />
     <Compile Include="Parser\Core\IParser.cs" />
     <Compile Include="Parser\Core\IParserSettings.cs" />
-    <Compile Include="Parser\HabraParser.cs" />
-    <Compile Include="Parser\HabraSettings.cs" />
-    <Compile Include="Parser\HtmlLoader.cs" />
-    <Compile Include="Parser\ParserWorker.cs" />
+    <Compile Include="Parser\Core\ParserWorker.cs" />
+    <Compile Include="Parser\Parser.cs" />
+    <Compile Include="Parser\ParserCreator.cs" />
+    <Compile Include="Parser\ParserSettings.cs" />
     <Compile Include="Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserPref.cs" />
+    <Compile Include="Content\UserPref.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

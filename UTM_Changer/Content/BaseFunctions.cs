@@ -6,6 +6,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
+using UTM_Changer.Parser;
 
 namespace UTM_Changer
 {
@@ -56,13 +57,34 @@ namespace UTM_Changer
                     BinaryFormatter formatter = new BinaryFormatter();
                     using (FileStream fs = new FileStream(path, FileMode.Open))
                     {
-                        userPrefs = (UserPrefs)formatter.Deserialize(fs);
+                        try
+                        {
+                            userPrefs = (UserPrefs)formatter.Deserialize(fs);
+                        }
+                        catch (Exception)
+                        {
+                            //throw;
+                           
+                        }
+                      
+                    }
+                }
+                else
+                {
+                    userPrefs = new UserPrefs();
+                    if (userPrefs.Parsers.Keys.Count == 0)
+                    {
+                        userPrefs.addParser("habr", new ParserCreator("post__title_link", "a", "https://habr.com/", "page{CurrentId}"));
                     }
                 }
             }
             else
             {
                 userPrefs = new UserPrefs();
+                if (userPrefs.Parsers.Keys.Count == 0)
+                {
+                    userPrefs.addParser("habr", new ParserCreator("post__title_link", "a", "https://habr.com/", "page{CurrentId}"));
+                }
             }
 
             // Console.WriteLine("Объект десериализован");
@@ -86,9 +108,14 @@ namespace UTM_Changer
                 
                 using (FileStream stream = new FileStream(path, FileMode.OpenOrCreate))
                 {
-                    formatter.Serialize(stream, userPrefs);
-
-                    //   Console.WriteLine("Объект сериализован");
+                    try
+                    {
+                        formatter.Serialize(stream, userPrefs);
+                    }
+                    catch (Exception)
+                    {
+                       // throw;
+                    }
                 }
             }
         }

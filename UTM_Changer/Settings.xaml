@@ -28,18 +28,20 @@
                 </TabItem>
                 <TabItem x:Name="customItem" Width="0" Height="0" Background="#FFE4E4E4" IsSelected="{Binding ElementName=сustom, Path=IsSelected}">
                     <Grid Height="346" Background="#FFE4E4E4">
-                        <TextBlock Text="Панель пользовательских параметров" VerticalAlignment="Top"  />
-                        <StackPanel Margin="0,20,0,0" Height="70" VerticalAlignment="Top">
-                            <CheckBox Content="Элемент управления 1" />
-                            <CheckBox Content="Элемент управления 2" />
-                            <CheckBox Content="Элемент управления 3" />
-                            <CheckBox Content="Элемент управления 4" />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="0,100,0,0" Height="24" VerticalAlignment="Top">
-                            <TextBlock Text="Какое-то значение:" Width="120"  Height="24"/>
-                            <Slider Width="150" Height="24" Margin="4,0,0,0" IsSnapToTickEnabled="True" Name="slider" />
-                            <TextBlock Width="30"  Height="24" Margin="4,0,0,0" Text="{Binding ElementName=slider, Path=Value}" />
-                        </StackPanel>
+                        <TextBlock Text="Add new parser" VerticalAlignment="Top"  />
+
+                        <Button x:Name="addNewParser" Content="Add parser" HorizontalAlignment="Left" Margin="10,324,0,0" VerticalAlignment="Top" Width="221" Click="addNewParser_Click"/>
+                        <Label Content="URL" HorizontalAlignment="Left" Margin="5,70,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.817,3.5"/>
+                        <TextBox x:Name="baseUrl" HorizontalAlignment="Left" Height="23" Margin="5,96,0,0" TextWrapping="Wrap" Text="http://example.com" VerticalAlignment="Top" Width="226"/>
+                        <Label Content="HTML Class selector" HorizontalAlignment="Left" Margin="5,124,0,0" VerticalAlignment="Top"/>
+                        <TextBox x:Name="classSelector" HorizontalAlignment="Left" Height="23" Margin="5,150,0,0" TextWrapping="Wrap" Text="div" VerticalAlignment="Top" Width="226"/>
+                        <Label Content="HTML Class name" HorizontalAlignment="Left" Margin="5,178,0,0" VerticalAlignment="Top"/>
+                        <TextBox x:Name="className" HorizontalAlignment="Left" Height="23" Margin="5,204,0,0" TextWrapping="Wrap" Text="post_content" VerticalAlignment="Top" Width="226"/>
+                        <Label Content="Parser Name" HorizontalAlignment="Left" Margin="0,16,0,0" VerticalAlignment="Top"/>
+                        <TextBox x:Name="parserName" HorizontalAlignment="Left" Height="23" Margin="5,42,0,0" TextWrapping="Wrap" Text="New Parser" VerticalAlignment="Top" Width="226"/>
+                        <Label Content="Prefix structure" HorizontalAlignment="Left" Margin="5,227,0,0" VerticalAlignment="Top"/>
+                        <TextBox x:Name="prefixStructure" HorizontalAlignment="Left" Height="23" Margin="5,253,0,0" TextWrapping="Wrap" Text="page={CurrentId}" VerticalAlignment="Top" Width="226"/>
+
                     </Grid>
                 </TabItem>
             </TabControl.Items>

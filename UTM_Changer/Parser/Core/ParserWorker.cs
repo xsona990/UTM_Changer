@@ -4,21 +4,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UTM_Changer.Parser.Core;
 
 namespace UTM_Changer.Parser
 {
+    [Serializable]
     class ParserWorker<T> where T : class
     {
+        #region Variables
         IParser<T> parser;
         IParserSettings parserSettings;
-
+        string querySelector;
+        string className;
         HtmlLoader loader;
 
         bool isActive;
-
+        #endregion
         #region Properties
-
+        public string ClassName { get => className; set => className = value; }
+        public string QuerySelector { get => querySelector; set => querySelector = value; }
         public IParser<T> Parser
         {
             get
@@ -51,12 +54,12 @@ namespace UTM_Changer.Parser
                 return isActive;
             }
         }
-
         #endregion
-
+        #region Events
         public event Action<object, T> OnNewData;
         public event Action<object> OnCompleted;
-
+        #endregion
+        #region Constructors
         public ParserWorker(IParser<T> parser)
         {
             this.parser = parser;
@@ -66,7 +69,8 @@ namespace UTM_Changer.Parser
         {
             this.parserSettings = parserSettings;
         }
-
+        #endregion
+        #region Methods
         public void Start()
         {
             isActive = true;
@@ -93,7 +97,7 @@ namespace UTM_Changer.Parser
 
                 var document = await domParser.ParseAsync(source);
 
-                var result = parser.Parse(document);
+                var result = parser.Parse(document, querySelector, className);
 
                 OnNewData?.Invoke(this, result);
             }
@@ -101,7 +105,7 @@ namespace UTM_Changer.Parser
             OnCompleted?.Invoke(this);
             isActive = false;
         }
-
+        #endregion
 
     }
 }
